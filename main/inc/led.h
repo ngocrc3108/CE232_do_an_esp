@@ -3,8 +3,10 @@
 
 #include "string.h"
 #include "driver/gpio.h"
+#include "../inc/query_string.h"
+#include "stdio.h"
 
-#define LED_ID "abcd435435fdgdf"
+#define LED_ID "myled"
 #define LED_GPIO 2
 
 typedef enum {
@@ -13,6 +15,7 @@ typedef enum {
 } Led_State;
 
 void ledInit();
-void ledSetState(Led_State state); 
+void ledSetState(Led_State state);
+extern void ledEventHandler(char *query);
 
 #endif

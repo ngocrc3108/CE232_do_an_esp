@@ -12,7 +12,8 @@ typedef enum {
     DOOR_STATE_ON = 1
 } Door_State;
 
-void ledInit();
-void ledSetState(Door_State state); 
+void doorInit();
+void doorSetState(Door_State state); 
+extern void doorEventHandler(char *query);
 
 #endif

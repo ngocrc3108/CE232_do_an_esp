@@ -15,6 +15,10 @@
 
 #include "esp_log.h"
 #include "mqtt_client.h"
+#include "string.h"
+#include "../inc/led.h"
+#include "../inc/fan.h"
+#include "../inc/door.h"
 
 void log_error_if_nonzero(const char *message, int error_code);
 

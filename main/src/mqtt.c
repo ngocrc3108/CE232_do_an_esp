@@ -31,7 +31,7 @@ void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event
         msg_id = esp_mqtt_client_publish(client, "esp32_test", "data_3", 0, 1, 0);
         ESP_LOGI(TAG, "sent publish successful, msg_id=%d", msg_id);
 
-        msg_id = esp_mqtt_client_subscribe(client, "esp32_test2", 0);
+        msg_id = esp_mqtt_client_subscribe(client, LED_ID, 0);
         ESP_LOGI(TAG, "sent subscribe successful, msg_id=%d", msg_id);
 
         break;
@@ -50,8 +50,16 @@ void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event
         break;
     case MQTT_EVENT_DATA:
         ESP_LOGI(TAG, "MQTT_EVENT_DATA");
-        printf("TOPIC=%.*s\r\n", event->topic_len, event->topic);
-        printf("DATA=%.*s\r\n", event->data_len, event->data);
+        char query_string[50];
+        char topic[50];
+        sprintf(query_string, "%.*s", event->data_len, event->data);
+        sprintf(topic, "%.*s", event->topic_len, event->topic);
+        if(strcmp(topic, LED_ID) == 0)
+            ledEventHandler(query_string);
+        else if(strcmp(topic, FAN_ID))
+            fanEventHandler(query_string);
+        else if(strcmp(topic, DOOR_ID))
+            doorEventHandler(query_string);
         break;
     case MQTT_EVENT_ERROR:
         ESP_LOGI(TAG, "MQTT_EVENT_ERROR");

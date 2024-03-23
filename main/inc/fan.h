@@ -3,8 +3,9 @@
 
 #include "string.h"
 #include "driver/gpio.h"
+#include "../inc/query_string.h"
 
-#define FAN_ID "abcd1234"
+#define FAN_ID "myfan"
 #define FAN_GPIO 2
 
 typedef enum {
@@ -21,5 +22,6 @@ typedef enum {
 void fanInit();
 void fanSetState(Fan_State state);
 void fanSetLevel(Fan_Level level);
+extern void fanEventHandler(char *query);
 
 #endif
