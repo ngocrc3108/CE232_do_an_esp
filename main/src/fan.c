@@ -7,29 +7,17 @@ void fanInit() {
     gpio_reset_pin(FAN_GPIO);
     gpio_set_direction(FAN_GPIO, GPIO_MODE_OUTPUT);
 
-    //get level and state from database
-
+    //TODO: get level and state from database (Ngoc)
 
     fanSetState(fanState);
     fanSetLevel(fanLevel);
-
-
 }
+
 void fanSetState(Fan_State state) {
-    fanState = state;
-    if(state) {
-        // PWM by current level
-    } else {
-        // PWM = 0;
-    }
-}
-
+    // (Tung | Nguyen)
+} 
 void fanSetLevel(Fan_Level level) {
-    fanLevel = level;
-
-    if(fanState) {
-        // PWM by level
-    } // else do nothing
+    // (Tung | Nguyen)
 }
 
 void fanEventHandler(char *query) {

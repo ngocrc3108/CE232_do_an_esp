@@ -21,9 +21,9 @@ typedef enum {
     FAN_LEVEL_HIGH = 2,
 } Fan_Level;
 
-void fanInit();
-void fanSetState(Fan_State state);
-void fanSetLevel(Fan_Level level);
-extern void fanEventHandler(char *query);
+void fanInit(); // (Ngoc)
+void fanSetState(Fan_State state); // (Tung | Nguyen)
+void fanSetLevel(Fan_Level level); // (Tung | Nguyen)
+extern void fanEventHandler(char *query); // (Ngoc)
 
 #endif
