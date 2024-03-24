@@ -4,7 +4,7 @@
 #include "string.h"
 #include "driver/gpio.h"
 
-#define DOOR_ID "abcd435435fdgdf"
+#define DOOR_ID "mydoor"
 #define DOOR_GPIO 2
 
 typedef enum {

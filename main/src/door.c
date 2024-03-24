@@ -1,6 +1,6 @@
 #include "../inc/door.h"
 
-static Door_State doorState;
+static Door_State ledState;
 
 void doorInit() {
     gpio_reset_pin(DOOR_GPIO);
@@ -8,11 +8,11 @@ void doorInit() {
 
     //get level and state from database
 
-    doorSetState(doorState);
+    doorSetState(ledState);
 }
 
 void doorSetState(Door_State state) {
-    doorState = state;
+    ledState = state;
     gpio_set_level(DOOR_GPIO, state);
 }
 

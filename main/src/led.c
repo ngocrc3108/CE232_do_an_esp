@@ -1,7 +1,7 @@
 #include "../inc/led.h"
 #include "esp_log.h"
 
-static Led_State doorState;
+static Led_State ledState;
 
 void ledInit() {
     gpio_reset_pin(LED_GPIO);
@@ -9,11 +9,11 @@ void ledInit() {
 
     //get level and state from database
 
-    ledSetState(doorState);
+    ledSetState(ledState);
 }
 
 void ledSetState(Led_State state) {
-    doorState = state;
+    ledState = state;
     gpio_set_level(LED_GPIO, state);
 }
 
@@ -27,5 +27,11 @@ void ledEventHandler(char *query) {
             ledSetState(LED_STATE_ON);
         else if(strcmp(state, "off") == 0)
             ledSetState(LED_STATE_OFF);
+    esp_mqtt_client_subscribe(mqtt_client, "esp32/led", 0);
+    char response[50];
+    char requestId[20];
+    getParameter(query, "requestId=", requestId);
+    sprintf(response, "success=true&requestId=%s", requestId);
+    esp_mqtt_client_publish(mqtt_client, "esp32/led", response, 0, 1, 0);
     }
 }

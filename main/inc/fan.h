@@ -3,6 +3,8 @@
 
 #include "string.h"
 #include "driver/gpio.h"
+#include "mqtt_client.h"
+#include "esp_log.h"
 #include "../inc/query_string.h"
 
 #define FAN_ID "myfan"

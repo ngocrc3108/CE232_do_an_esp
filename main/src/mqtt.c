@@ -1,5 +1,7 @@
 #include "./inc/mqtt.h"
 
+esp_mqtt_client_handle_t mqtt_client;
+
 static const char *TAG = "mqtt_example";
 
 void log_error_if_nonzero(const char *message, int error_code)
@@ -28,10 +30,12 @@ void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event
     switch ((esp_mqtt_event_id_t)event_id) {
     case MQTT_EVENT_CONNECTED:
         ESP_LOGI(TAG, "MQTT_EVENT_CONNECTED");
-        msg_id = esp_mqtt_client_publish(client, "esp32_test", "data_3", 0, 1, 0);
-        ESP_LOGI(TAG, "sent publish successful, msg_id=%d", msg_id);
 
         msg_id = esp_mqtt_client_subscribe(client, LED_ID, 0);
+        ESP_LOGI(TAG, "sent subscribe successful, msg_id=%d", msg_id);
+        msg_id = esp_mqtt_client_subscribe(client, FAN_ID, 0);
+        ESP_LOGI(TAG, "sent subscribe successful, msg_id=%d", msg_id);
+        msg_id = esp_mqtt_client_subscribe(client, DOOR_ID, 0);
         ESP_LOGI(TAG, "sent subscribe successful, msg_id=%d", msg_id);
 
         break;
@@ -54,11 +58,13 @@ void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event
         char topic[50];
         sprintf(query_string, "%.*s", event->data_len, event->data);
         sprintf(topic, "%.*s", event->topic_len, event->topic);
+        ESP_LOGI("TOPIC", "%s", topic);
+        ESP_LOGI("QUERY", "%s", query_string);
         if(strcmp(topic, LED_ID) == 0)
             ledEventHandler(query_string);
-        else if(strcmp(topic, FAN_ID))
+        else if(strcmp(topic, FAN_ID) == 0)
             fanEventHandler(query_string);
-        else if(strcmp(topic, DOOR_ID))
+        else if(strcmp(topic, DOOR_ID) == 0)
             doorEventHandler(query_string);
         break;
     case MQTT_EVENT_ERROR:
@@ -84,8 +90,8 @@ void mqtt_app_start(void)
         .credentials.username = "B98DeTbKkg8XPIVnXlIGl49CVOM0YxApxyTBfS9qZ5bEEWPp5nVggUH1xjPlFgB0",
     };
 
-    esp_mqtt_client_handle_t client = esp_mqtt_client_init(&mqtt_cfg);
+    mqtt_client = esp_mqtt_client_init(&mqtt_cfg);
     /* The last argument may be used to pass data to the event handler, in this example mqtt_event_handler */
-    esp_mqtt_client_register_event(client, ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
-    esp_mqtt_client_start(client);
+    esp_mqtt_client_register_event(mqtt_client, ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
+    esp_mqtt_client_start(mqtt_client);
 }

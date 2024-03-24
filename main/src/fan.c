@@ -12,6 +12,8 @@ void fanInit() {
 
     fanSetState(fanState);
     fanSetLevel(fanLevel);
+
+
 }
 void fanSetState(Fan_State state) {
     fanState = state;
@@ -40,6 +42,7 @@ void fanEventHandler(char *query) {
             fanSetState(FAN_STATE_ON);
         else if(strcmp(state, "off"))
             fanSetState(FAN_STATE_OFF);
+        ESP_LOGI("FAN", "set state: %s", state);
     } else if(strcmp(cmd, "setLevel") == 0) {
         char level[10];
         getParameter(query, "level=", level);
@@ -49,5 +52,6 @@ void fanEventHandler(char *query) {
             fanSetLevel(FAN_LEVEL_NORMAL);
         else if(strcmp(level, "high") == 0)
             fanSetLevel(FAN_LEVEL_HIGH);
+        ESP_LOGI("FAN", "set level: %s", level);
     }
 }

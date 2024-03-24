@@ -20,6 +20,8 @@
 #include "../inc/fan.h"
 #include "../inc/door.h"
 
+extern esp_mqtt_client_handle_t mqtt_client;
+
 void log_error_if_nonzero(const char *message, int error_code);
 
 /*

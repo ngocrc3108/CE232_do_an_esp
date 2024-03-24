@@ -26,18 +26,7 @@ void app_main(void)
       ret = nvs_flash_init();
     }
     
-    gpio_reset_pin(2);
-    gpio_set_direction(2, GPIO_MODE_OUTPUT);
     wifi_init_sta();
     mqtt_app_start();
-
-    // int a = 0;
-
-    // while (1)
-    // {
-    //   gpio_set_level(2, a);
-    //   a = !a;
-    //   vTaskDelay(1000);
-    // }
-    
+    ledInit();
 }
