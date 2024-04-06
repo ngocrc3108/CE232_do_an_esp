@@ -3,6 +3,8 @@
 
 #include <string.h>
 
+#define EVENT_HANDLER_LOG_TAG "EH"
+
 typedef enum {
 	QUERY_STRING_OK = 0,
 	QUERY_STRING_ERR = 1

@@ -12,5 +12,7 @@ typedef enum {
 
 extern Event_Handle_Status event_handler_register_device(Device* device);
 extern Event_Handle_Status event_handler_handle(char* topic, char* query_string);
+Event_Handle_Status event_handler_on_set_state(Device* pDevice, char* query_string);
+Event_Handle_Status event_handler_on_set_level(Device* pDevice, char* query_string);
 
 #endif
