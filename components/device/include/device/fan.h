@@ -1,5 +1,5 @@
-#ifndef __INC_FAN_H__
-#define __INC_FAN_H__
+#ifndef __FAN_H__
+#define __FAN_H__
 
 #include "device/device.h"
 
@@ -22,9 +22,8 @@ struct Fan {
 
 extern void fan_contructor(Fan* self, const char* id,
         uint8_t gpio_pin, Device_State state, Fan_Level level);
-extern void fan_set_level(Fan* self, Fan_Level level);
-extern void fan_set_state(Device* self, Device_State state);
-
-Device_Vtable FAN_METHODS[] = {{ fan_set_state, device_response }};
+void fan_set_level(Fan* self, Fan_Level level);
+void fan_set_state(Device* self, Device_State state);
+void fan_print(Device* self);
 
 #endif

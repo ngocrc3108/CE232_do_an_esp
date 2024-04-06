@@ -1,5 +1,7 @@
 #include "device/fan.h"
 
+Device_Vtable FAN_METHODS[] = {{ fan_set_state, device_response, fan_print }};
+
 void fan_contructor(Fan* self, const char* id,
         uint8_t gpio_pin, Device_State state, Fan_Level level) {
 
@@ -15,4 +17,11 @@ void fan_set_state(Device* self, Device_State state) {
 
 void fan_set_level(Fan* self, Fan_Level level) {
     self->level = level;
+}
+
+void fan_print(Device* self) {
+    device_print(self);
+
+    Fan* pFan = (Fan*)self;
+    printf("level: %d\n", pFan->level);
 }
