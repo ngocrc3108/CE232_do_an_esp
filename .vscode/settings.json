@@ -16,6 +16,8 @@
     "idf.pythonBinPathWin": "C:\\Espressif\\tools\\python_env\\idf5.2_py3.11_env\\Scripts\\python.exe",
     "idf.toolsPathWin": "C:\\Espressif\\tools",
     "files.associations": {
-        "mqtt_client.h": "c"
+        "mqtt_client.h": "c",
+        "ngocrc_wifi.h": "c",
+        "device.h": "c"
     }
 }

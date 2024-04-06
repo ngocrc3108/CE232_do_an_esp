@@ -1,7 +1,7 @@
 #ifndef __INC_FAN_H__
 #define __INC_FAN_H__
 
-#include "device.h"
+#include "device/device.h"
 
 #define FAN_ID "myfan"
 #define FAN_GPIO 2

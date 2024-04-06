@@ -1,4 +1,4 @@
-#include "include/device.h"
+#include "device/device.h"
 
 void device_response(Device* self, char* requestId, uint8_t success) {
     char* buffer[50];

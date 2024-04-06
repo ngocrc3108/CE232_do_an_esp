@@ -1,4 +1,4 @@
-#include "include/fan.h"
+#include "device/fan.h"
 
 void fan_contructor(Fan* self, const char* id,
         uint8_t gpio_pin, Device_State state, Fan_Level level) {
