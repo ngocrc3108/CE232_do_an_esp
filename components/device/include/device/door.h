@@ -9,7 +9,7 @@ struct Door {
     Device base;
 };
 
-void door_contructor(Door* self, const char* id, uint8_t gpio_pin, Device_State state);
+void door_contructor(Door* self, char* id, uint8_t gpio_pin, Device_State state);
 void door_set_state(Device* self, Device_State state);
 
 #endif

@@ -18,7 +18,9 @@
     "files.associations": {
         "mqtt_client.h": "c",
         "ngocrc_wifi.h": "c",
-        "device.h": "c"
+        "device.h": "c",
+        "stdint.h": "c",
+        "mqtt.h": "c"
     },
     "idf.flashType": "UART"
 }

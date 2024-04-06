@@ -20,7 +20,7 @@ struct Fan {
     Fan_Level level;
 };
 
-extern void fan_contructor(Fan* self, const char* id,
+extern void fan_contructor(Fan* self, char* id,
         uint8_t gpio_pin, Device_State state, Fan_Level level);
 void fan_set_level(Fan* self, Fan_Level level);
 void fan_set_state(Device* self, Device_State state);

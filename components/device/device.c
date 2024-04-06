@@ -1,4 +1,9 @@
 #include "device/device.h"
+#include "connection/mqtt.h"
+#include <string.h>
+#include <stdio.h>
+#include "driver/gpio.h"
+#include "esp_log.h"
 
 void device_response(Device* self, char* requestId, uint8_t success) {
     char buffer[50];
@@ -6,11 +11,13 @@ void device_response(Device* self, char* requestId, uint8_t success) {
     esp_mqtt_client_publish(mqtt_client, "response", buffer, 0, 2, 0);
 }
 
-void device_constructor(Device* self, const char* id, uint8_t gpio_pin, Device_State state) {
+void device_constructor(Device* self, char* id, uint8_t gpio_pin, Device_State state) {
     strcpy(self->id, id);
     self->state = state;
     self->gpio_pin = gpio_pin;
     gpio_set_direction(gpio_pin, GPIO_MODE_OUTPUT);
+
+    esp_mqtt_client_subscribe(mqtt_client, id, 0);
 }
 
 void device_print(Device* self) {

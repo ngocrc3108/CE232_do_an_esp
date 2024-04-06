@@ -1,8 +1,13 @@
 #include "device/fan.h"
+#include "connection/mqtt.h"
+#include <string.h>
+#include <stdio.h>
+#include "driver/gpio.h"
+#include "esp_log.h"
 
 Device_Vtable FAN_METHODS[] = {{ fan_set_state, device_response, fan_print }};
 
-void fan_contructor(Fan* self, const char* id,
+void fan_contructor(Fan* self, char* id,
         uint8_t gpio_pin, Device_State state, Fan_Level level) {
 
     device_constructor((Device*)self, id, gpio_pin, state);    
