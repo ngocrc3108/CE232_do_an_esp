@@ -8,8 +8,9 @@ void device_response(Device* self, char* requestId, uint8_t success) {
 
 void device_constructor(Device* self, const char* id, uint8_t gpio_pin, Device_State state) {
     strcpy(self->id, id);
-    self->gpio_pin = gpio_pin;
     self->state = state;
+    self->gpio_pin = gpio_pin;
+    gpio_set_direction(gpio_pin, GPIO_MODE_OUTPUT);
 }
 
 void device_print(Device* self) {
