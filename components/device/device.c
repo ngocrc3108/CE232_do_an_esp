@@ -10,8 +10,10 @@ char TAG[] = "DEVICE";
 
 void device_response(Device* self, char* query_string, uint8_t success) {
     char buffer[70];
+    char topic[20] = "esp32/";
+    strcat(topic, self->type);
     sprintf(buffer, "%s&success=%d", query_string, success);
-    int msg_id = esp_mqtt_client_publish(mqtt_client, "response", buffer, 0, 2, 0);
+    int msg_id = esp_mqtt_client_publish(mqtt_client, topic, buffer, 0, 2, 0);
     ESP_LOGI(TAG, "sent response successful, msg_id=%d", msg_id);
 }
 

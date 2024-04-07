@@ -26,7 +26,7 @@ Event_Handle_Status eh_on_message(char* topic, char* query_string) {
         Device* pDevice = registed_devices[i];
         if(strcmp(pDevice->id, topic) == 0) {
             char cmd[20];
-            query_string_get_value(query_string, "cmd=", cmd);\
+            query_string_get_value(query_string, "cmd=", cmd);
 
             if(strcmp(cmd, "setState") == 0) 
                 eh_set_state(pDevice, query_string);
@@ -34,7 +34,7 @@ Event_Handle_Status eh_on_message(char* topic, char* query_string) {
                 eh_set_level(pDevice, query_string);
             else return EVENT_HANDLE_FAIL;
 
-            pDevice->methods->response(pDevice, query_string, 1); 
+            pDevice->methods->response(pDevice, query_string, true); 
             return EVENT_HANDLE_SUCCESS;
         }
     }

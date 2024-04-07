@@ -22,7 +22,7 @@ struct Device_Vtable {
 
 struct Device {
     Device_Vtable* methods;
-    char id[DEVICE_ID_SIZE];
+    char id[DEVICE_ID_SIZE+1];
     uint8_t gpio_pin;
     Device_State state;
     char type[5];
