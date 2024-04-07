@@ -21,9 +21,9 @@ struct Fan {
 };
 
 extern void fan_contructor(Fan* self, char* id,
-        uint8_t gpio_pin, Device_State state, Fan_Level level);
-void fan_set_level(Fan* self, Fan_Level level);
-void fan_set_state(Device* self, Device_State state);
-void fan_print(Device* self);
+        uint8_t gpio_pin, Device_State state, Fan_Level level); // Ngoc
+void fan_set_level(Fan* self, Fan_Level level); // Tung || Nguyen
+void fan_set_state(Device* self, Device_State state); // Tung || Nguyen
+void fan_print(Device* self); // for debug
 
 #endif

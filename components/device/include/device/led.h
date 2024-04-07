@@ -10,7 +10,7 @@ struct Led {
     uint64_t time;
 };
 
-void led_contructor(Led* self, char* id, uint8_t gpio_pin, Device_State state);
-void led_set_state(Device* self, Device_State state);
+void led_contructor(Led* self, char* id, uint8_t gpio_pin, Device_State state); // Ngoc
+void led_set_state(Device* self, Device_State state); // Ngoc
 
 #endif

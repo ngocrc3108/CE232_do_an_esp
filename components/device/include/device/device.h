@@ -27,7 +27,7 @@ struct Device {
     Device_State state;
 };
 
-extern void device_response(Device* self, char* query_string, uint8_t success);
-extern void device_constructor(Device* self, char* id, uint8_t gpio_pin, Device_State state);
-extern void device_print(Device* self);
+extern void device_response(Device* self, char* query_string, uint8_t success); // Ngoc
+extern void device_constructor(Device* self, char* id, uint8_t gpio_pin, Device_State state); // Ngoc
+extern void device_print(Device* self); // Ngoc. for debug
 #endif
