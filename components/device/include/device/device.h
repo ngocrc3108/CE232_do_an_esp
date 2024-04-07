@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #define DEVICE_ID_SIZE 24
+#define DEVICE_LOG_TAG
 
 typedef struct Device Device;
 typedef struct Device_Vtable Device_Vtable;
@@ -15,7 +16,7 @@ typedef enum {
 
 struct Device_Vtable {
     void (*setState)(Device* self, Device_State state);
-    void (*response)(Device* self, char* requestId, uint8_t success);
+    void (*response)(Device* self, char* query_string, uint8_t success);
     void (*print)(Device* self);
 };
 
@@ -26,7 +27,7 @@ struct Device {
     Device_State state;
 };
 
-extern void device_response(Device* self, char* requestId, uint8_t success);
+extern void device_response(Device* self, char* query_string, uint8_t success);
 extern void device_constructor(Device* self, char* id, uint8_t gpio_pin, Device_State state);
 extern void device_print(Device* self);
 #endif

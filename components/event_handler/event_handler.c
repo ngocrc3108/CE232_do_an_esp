@@ -4,6 +4,7 @@
 #include <esp_log.h>
 #include "query_string.h"
 #include "device/fan.h"
+#include <stdio.h>
 
 Device* registed_devices[EVENT_DEVICE_NUM_MAX];
 int device_count = 0;
@@ -30,6 +31,10 @@ Event_Handle_Status event_handler_handle(char* topic, char* query_string) {
                 event_handler_on_set_state(pDevice, query_string);
             else if(strcmp(cmd, "setLevel") == 0) 
                 event_handler_on_set_level(pDevice, query_string);
+            else return EVENT_HANDLE_FAIL;
+
+            pDevice->methods->response(pDevice, query_string, 1); 
+            return EVENT_HANDLE_SUCCESS;
         }
     }
     return EVENT_HANDLE_FAIL;

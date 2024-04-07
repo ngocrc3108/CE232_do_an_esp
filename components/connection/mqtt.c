@@ -1,4 +1,5 @@
 #include "connection/mqtt.h"
+#include "event_handler.h"
 
 esp_mqtt_client_handle_t mqtt_client;
 
@@ -60,12 +61,7 @@ void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event
         sprintf(topic, "%.*s", event->topic_len, event->topic);
         ESP_LOGI("TOPIC", "%s", topic);
         ESP_LOGI("QUERY", "%s", query_string);
-        // if(strcmp(topic, LED_ID) == 0)
-        //     ledEventHandler(query_string);
-        // else if(strcmp(topic, FAN_ID) == 0)
-        //     fanEventHandler(query_string);
-        // else if(strcmp(topic, DOOR_ID) == 0)
-        //     doorEventHandler(query_string);
+        event_handler_handle(topic, query_string);
         break;
     case MQTT_EVENT_ERROR:
         ESP_LOGI(TAG, "MQTT_EVENT_ERROR");
@@ -87,7 +83,7 @@ void mqtt_app_start(void)
 {
     esp_mqtt_client_config_t mqtt_cfg = {
         .broker.address.uri = "mqtt://mqtt.flespi.io",
-        .credentials.username = "B98DeTbKkg8XPIVnXlIGl49CVOM0YxApxyTBfS9qZ5bEEWPp5nVggUH1xjPlFgB0",
+        .credentials.username = "uOtUTWCg12RiQ0oWmGCmTwEawGezbS4uwlcg7FkWv15bQhW0NoavLCt58xu8dosx",
     };
 
     mqtt_client = esp_mqtt_client_init(&mqtt_cfg);

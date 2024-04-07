@@ -4,11 +4,15 @@
 #include <stdio.h>
 #include "driver/gpio.h"
 #include "esp_log.h"
+#include "event_handler.h"
 
-void device_response(Device* self, char* requestId, uint8_t success) {
-    char buffer[50];
-    sprintf(buffer, "requestId=%s&success=%d", requestId, success);
-    esp_mqtt_client_publish(mqtt_client, "response", buffer, 0, 2, 0);
+char TAG[] = "DEVICE";
+
+void device_response(Device* self, char* query_string, uint8_t success) {
+    char buffer[70];
+    sprintf(buffer, "%s&success=%d", query_string, success);
+    int msg_id = esp_mqtt_client_publish(mqtt_client, "response", buffer, 0, 2, 0);
+    ESP_LOGI(TAG, "sent response successful, msg_id=%d", msg_id);
 }
 
 void device_constructor(Device* self, char* id, uint8_t gpio_pin, Device_State state) {
@@ -17,9 +21,11 @@ void device_constructor(Device* self, char* id, uint8_t gpio_pin, Device_State s
     self->gpio_pin = gpio_pin;
     gpio_set_direction(gpio_pin, GPIO_MODE_OUTPUT);
 
-    esp_mqtt_client_subscribe(mqtt_client, id, 0);
+    event_handler_register_device(self);
+    int msg_id = esp_mqtt_client_subscribe(mqtt_client, id, 0);
+    ESP_LOGI(TAG, "sent subcribe successful, msg_id=%d", msg_id);
 }
 
 void device_print(Device* self) {
-    printf("id: %s\ngpio: %d\nstate: %d\n", self->id, self->gpio_pin, self->state);
+    printf("_ptr: %d\nid: %s\ngpio: %d\nstate: %d\n", (int)self, self->id, self->gpio_pin, self->state);
 }

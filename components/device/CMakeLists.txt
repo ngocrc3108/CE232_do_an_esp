@@ -1,3 +1,3 @@
 idf_component_register(SRCS "device.c" "fan.c" "led.c" "door.c"
                        INCLUDE_DIRS "include"
-                       REQUIRES mqtt driver device connection)
+                       REQUIRES mqtt driver device connection event_handler)
