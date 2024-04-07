@@ -21,7 +21,7 @@ void device_constructor(Device* self, char* id, uint8_t gpio_pin, Device_State s
     self->gpio_pin = gpio_pin;
     gpio_set_direction(gpio_pin, GPIO_MODE_OUTPUT);
 
-    event_handler_register_device(self);
+    eh_register_device(self);
     // int msg_id = esp_mqtt_client_subscribe(mqtt_client, id, 0);
     // ESP_LOGI(TAG, "sent subcribe successful, msg_id=%d", msg_id);
 }

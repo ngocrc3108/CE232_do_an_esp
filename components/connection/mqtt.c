@@ -31,11 +31,10 @@ void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event
 {
     ESP_LOGD(TAG, "Event dispatched from event loop base=%s, event_id=%" PRIi32 "", base, event_id);
     esp_mqtt_event_handle_t event = event_data;
-    esp_mqtt_client_handle_t client = event->client;
-    int msg_id;
     switch ((esp_mqtt_event_id_t)event_id) {
     case MQTT_EVENT_CONNECTED:
         ESP_LOGI(TAG, "MQTT_EVENT_CONNECTED");
+        eh_subscribe_devices();
         break;
     case MQTT_EVENT_DISCONNECTED:
         ESP_LOGI(TAG, "MQTT_EVENT_DISCONNECTED");
@@ -56,7 +55,7 @@ void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event
         char topic[50];
         sprintf(query_string, "%.*s", event->data_len, event->data);
         sprintf(topic, "%.*s", event->topic_len, event->topic);
-        event_handler_handle(topic, query_string);
+        eh_on_message(topic, query_string);
         break;
     case MQTT_EVENT_ERROR:
         ESP_LOGI(TAG, "MQTT_EVENT_ERROR");
@@ -73,11 +72,15 @@ void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event
     }
 }
 
-void mqtt_app_start(void)
-{
+void mqtt_init(void) {
+    char last_will_message[1024];
+    eh_get_all_device_id_and_type(last_will_message);
     esp_mqtt_client_config_t mqtt_cfg = {
         .broker.address.uri = MQTT_URL,
         .credentials.username = MQTT_USERNAME,
+        .session.last_will.topic = "esp/disconnect",
+        .session.last_will.msg = last_will_message,
+        .session.keepalive = 10,
     };
 
     mqtt_client = esp_mqtt_client_init(&mqtt_cfg);

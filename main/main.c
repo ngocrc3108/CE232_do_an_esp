@@ -20,14 +20,9 @@ void app_main(void) {
 		ret = nvs_flash_init();
     }
 
-    // wifi_init_sta();
-    // mqtt_app_start();
-
-    // always call contructors after initialize wifi, mqtt
-    fan_contructor(&fan, "onlyfan", 2, 0, 0);
-    led_contructor(&led, "myLed", 5, 0);
-	event_handler_print_all_devices();
-	char buffer[1024];
-	event_handler_get_all_device_id_and_type(buffer);
-	printf(buffer);
+    fan_contructor(&fan, "65fc0fa8dc344fc0da52c6d1", 5, 0, 0);
+    led_contructor(&led, "65fc0f92dc344fc0da52c6cb", 2, 0);
+    wifi_init_sta();
+    mqtt_init();
+	eh_print_all_devices();
 }
