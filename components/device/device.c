@@ -22,10 +22,11 @@ void device_constructor(Device* self, char* id, uint8_t gpio_pin, Device_State s
     gpio_set_direction(gpio_pin, GPIO_MODE_OUTPUT);
 
     event_handler_register_device(self);
-    int msg_id = esp_mqtt_client_subscribe(mqtt_client, id, 0);
-    ESP_LOGI(TAG, "sent subcribe successful, msg_id=%d", msg_id);
+    // int msg_id = esp_mqtt_client_subscribe(mqtt_client, id, 0);
+    // ESP_LOGI(TAG, "sent subcribe successful, msg_id=%d", msg_id);
 }
 
 void device_print(Device* self) {
-    printf("_ptr: %d\nid: %s\ngpio: %d\nstate: %d\n", (int)self, self->id, self->gpio_pin, self->state);
+    printf("_ptr: %x\nid: %s\ntype: %s\ngpio: %d\nstate: %d\n",
+        (int)self, self->id, self->type, self->gpio_pin, self->state);
 }

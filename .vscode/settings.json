@@ -20,7 +20,8 @@
         "ngocrc_wifi.h": "c",
         "device.h": "c",
         "stdint.h": "c",
-        "mqtt.h": "c"
+        "mqtt.h": "c",
+        "sockets.h": "c"
     },
     "idf.flashType": "UART"
 }

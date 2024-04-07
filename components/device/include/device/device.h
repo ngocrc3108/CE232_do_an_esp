@@ -25,6 +25,7 @@ struct Device {
     char id[DEVICE_ID_SIZE];
     uint8_t gpio_pin;
     Device_State state;
+    char type[5];
 };
 
 extern void device_response(Device* self, char* query_string, uint8_t success); // Ngoc

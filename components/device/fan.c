@@ -12,6 +12,7 @@ void fan_contructor(Fan* self, char* id,
 
     device_constructor((Device*)self, id, gpio_pin, state);    
     self->base.methods = FAN_METHODS;
+    strcpy(((Device*)self)->type, "fan");
     self->setLevel = &fan_set_level;
     self->level = level;
 }

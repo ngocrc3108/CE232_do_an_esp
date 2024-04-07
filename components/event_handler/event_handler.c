@@ -5,6 +5,7 @@
 #include "query_string.h"
 #include "device/fan.h"
 #include <stdio.h>
+#include "connection/mqtt.h"
 
 Device* registed_devices[EVENT_DEVICE_NUM_MAX];
 int device_count = 0;
@@ -53,5 +54,28 @@ Event_Handle_Status event_handler_on_set_level(Device* pDevice, char* query_stri
     query_string_get_value(query_string, "level=", level);
     Fan_Level fanLevel = level[0] - '0'; // '0' | '1' | '2'
     ((Fan*)pDevice)->setLevel((Fan*)pDevice, fanLevel);
+    return EVENT_HANDLE_SUCCESS;
+}
+
+Event_Handle_Status event_handler_subcribe_for_registed_devices() {
+    for(int i = 0; i < device_count; i++) 
+        esp_mqtt_client_subscribe(mqtt_client, registed_devices[i]->id, 0);
+    return EVENT_HANDLE_SUCCESS;
+}
+
+Event_Handle_Status event_handler_get_all_device_id_and_type(char* result) {
+    result[0] = '\0';
+    for(int i = 0; i < device_count; i++)  {
+        char temp[50];
+        Device* pDevice = registed_devices[i];
+        sprintf(temp, "id%d=%s&type%d=%s&", i, pDevice->id, i, pDevice->type);
+        strcat(result, temp);
+    }
+    return EVENT_HANDLE_SUCCESS;
+}
+
+Event_Handle_Status event_handler_print_all_devices() {
+    for(int i = 0; i < device_count; i++)
+        registed_devices[i]->methods->print(registed_devices[i]);
     return EVENT_HANDLE_SUCCESS;
 }

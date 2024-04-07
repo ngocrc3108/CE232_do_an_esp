@@ -10,6 +10,7 @@ Device_Vtable LED_METHODS[] = {{ led_set_state, device_response, device_print }}
 void led_contructor(Led* self, char* id, uint8_t gpio_pin, Device_State state) {
     device_constructor((Device*)self, id, gpio_pin, state);    
     self->base.methods = LED_METHODS;
+    strcpy(((Device*)self)->type, "led");
 }
 
 void led_set_state(Device* self, Device_State state) {

@@ -9,16 +9,11 @@
    software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
    CONDITIONS OF ANY KIND, either express or implied.
 */
-#include "lwip/sockets.h"
-#include "lwip/dns.h"
-#include "lwip/netdb.h"
 
-#include "esp_log.h"
 #include "mqtt_client.h"
-#include "string.h"
-// #include "../inc/led.h"
-// #include "../inc/fan.h"
-// #include "../inc/door.h"
+
+#define MQTT_URL "mqtt://mqtt.flespi.io"
+#define MQTT_USERNAME "uOtUTWCg12RiQ0oWmGCmTwEawGezbS4uwlcg7FkWv15bQhW0NoavLCt58xu8dosx"
 
 extern esp_mqtt_client_handle_t mqtt_client;
 
