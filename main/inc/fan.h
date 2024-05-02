@@ -9,7 +9,7 @@
 #include "../inc/query_string.h"
 
 #define FAN_ID "myfan"
-#define FAN_GPIO 2
+#define FAN_GPIO 18
 
 typedef enum {
     FAN_STATE_OFF = 0,

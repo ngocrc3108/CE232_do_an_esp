@@ -1,11 +1,22 @@
 #include "../inc/fan.h"
 
+#define FAN_MCPWM_UNIT MCPWM_UNIT_0
+#define FAN_MCPWM_TIMER MCPWM_TIMER_0
+#define FAN_MCPWM_GEN MCPWM_OPR_A
+
 static Fan_State fanState;
 static Fan_Level fanLevel;
 
 void fanInit() {
-    gpio_reset_pin(FAN_GPIO);
-    gpio_set_direction(FAN_GPIO, GPIO_MODE_OUTPUT);
+    //Initialize MCPWM
+    mcpwm_gpio_init(FAN_MCPWM_UNIT, MCPWM0A, FAN_GPIO);
+    mcpwm_config_t pwm_config;
+    pwm_config.frequency = 50;  // frequency = 50Hz
+    pwm_config.cmpr_a = 0;        // duty cycle of PWMxA = 0
+    pwm_config.cmpr_b = 0;        // duty cycle of PWMxB = 0
+    pwm_config.counter_mode = MCPWM_UP_COUNTER;
+    pwm_config.duty_mode = MCPWM_DUTY_MODE_0;
+    mcpwm_init(FAN_MCPWM_UNIT, FAN_MCPWM_TIMER, &pwm_config);
 
     //TODO: get level and state from database (Ngoc)
 
@@ -21,23 +32,24 @@ void fanSetState(Fan_State state) {
     }
     else if  (state == FAN_STATE_OFF)
     {
-        gpio_set_level(FAN_GPIO, 0);
+        mcpwm_set_duty(FAN_MCPWM_UNIT, FAN_MCPWM_TIMER, FAN_MCPWM_GEN, 0);
     }
 
 } 
 void fanSetLevel(Fan_Level level) {
     // (Tung | Nguyen)
+    fanLevel = level;
     if (level == FAN_LEVEL_LOW)
     {
-        mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A, 35);
+        mcpwm_set_duty(FAN_MCPWM_UNIT, FAN_MCPWM_TIMER, FAN_MCPWM_GEN, 50);
     }
     else if (level == FAN_LEVEL_NORMAL)
     {
-        mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A, 70);
+        mcpwm_set_duty(FAN_MCPWM_UNIT, FAN_MCPWM_TIMER, FAN_MCPWM_GEN, 75);
     }
     else if (level == FAN_LEVEL_HIGH)
     {
-        mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A, 100);
+        mcpwm_set_duty(FAN_MCPWM_UNIT, FAN_MCPWM_TIMER, FAN_MCPWM_GEN, 100);
     }
 }
 

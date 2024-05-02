@@ -25,20 +25,27 @@ void app_main(void)
       ESP_ERROR_CHECK(nvs_flash_erase());
       ret = nvs_flash_init();
     }
-
-    //Initialize MCPWM
-    mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM0A, FAN_GPIO);
-    mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM0A, DOOR_GPIO);
-    mcpwm_config_t pwm_config;
-    pwm_config.frequency = 50;  // frequency = 50Hz
-    pwm_config.cmpr_a = 0;        // duty cycle of PWMxA = 0
-    pwm_config.cmpr_b = 0;        // duty cycle of PWMxB = 0
-    pwm_config.counter_mode = MCPWM_UP_COUNTER;
-    pwm_config.duty_mode = MCPWM_DUTY_MODE_0;
-    mcpwm_init(MCPWM_UNIT_0, MCPWM_TIMER_0, &pwm_config);
   
-    wifi_init_sta();
-    mqtt_app_start();
-    ledInit();
+    // wifi_init_sta();
+    // mqtt_app_start();
+    // ledInit();
     fanInit();
+    doorInit();
+
+    fanSetState(FAN_STATE_ON);
+    while(1) {
+        fanSetLevel(FAN_LEVEL_LOW);
+        vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
+        fanSetLevel(FAN_LEVEL_NORMAL);
+        vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
+        fanSetLevel(FAN_LEVEL_HIGH);
+        vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
+        fanSetState(FAN_STATE_OFF);
+        vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
+
+        doorSetState(DOOR_STATE_OPEN);
+        vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
+        doorSetState(DOOR_STATE_CLOSE);
+        vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
+    }
 }
