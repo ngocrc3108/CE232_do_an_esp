@@ -15,9 +15,30 @@ void fanInit() {
 
 void fanSetState(Fan_State state) {
     // (Tung | Nguyen)
+    if (state == FAN_STATE_ON) 
+    {
+        fanSetLevel(fanLevel);
+    }
+    else if  (state == FAN_STATE_OFF)
+    {
+        gpio_set_level(FAN_GPIO, 0);
+    }
+
 } 
 void fanSetLevel(Fan_Level level) {
     // (Tung | Nguyen)
+    if (level == FAN_LEVEL_LOW)
+    {
+        mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A, 35);
+    }
+    else if (level == FAN_LEVEL_NORMAL)
+    {
+        mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A, 70);
+    }
+    else if (level == FAN_LEVEL_HIGH)
+    {
+        mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A, 100);
+    }
 }
 
 void fanEventHandler(char *query) {

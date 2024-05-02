@@ -3,6 +3,7 @@
 
 #include "string.h"
 #include "driver/gpio.h"
+#include "driver/mcpwm.h"
 #include "mqtt_client.h"
 #include "esp_log.h"
 #include "../inc/query_string.h"

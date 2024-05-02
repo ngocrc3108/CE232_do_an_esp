@@ -3,9 +3,11 @@
 
 #include "string.h"
 #include "driver/gpio.h"
+#include "driver/mcpwm.h"
+#include "soc/mcpwm_periph.h"
 
 #define DOOR_ID "mydoor"
-#define DOOR_GPIO 2
+#define DOOR_GPIO 4
 
 typedef enum {
     DOOR_STATE_CLOSE = 0,
