@@ -42,7 +42,8 @@
         "span": "c",
         "led.h": "c",
         "mqtt_client.h": "c",
-        "gpio.h": "c"
+        "gpio.h": "c",
+        "mqtt.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

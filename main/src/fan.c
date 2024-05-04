@@ -67,12 +67,17 @@ void fanEventHandler(char *query) {
     } else if(strcmp(cmd, "setLevel") == 0) {
         char level[10];
         getParameter(query, "level=", level);
-        if(strcmp(level, "low") == 0)
-            fanSetLevel(FAN_LEVEL_LOW);
-        else if(strcmp(level, "normal") == 0)
-            fanSetLevel(FAN_LEVEL_NORMAL);
-        else if(strcmp(level, "high") == 0)
-            fanSetLevel(FAN_LEVEL_HIGH);
+        fanSetLevel((Fan_Level)(level[0] - '0')); // level = '0' | '1' | '2'
         ESP_LOGI("FAN", "set level: %s", level);
     }
+
+    fanResponse(query, 1);
+}
+
+void fanResponse(char* query, uint8_t success) {
+    char response[50];
+    char requestId[20];
+    getParameter(query, "requestId=", requestId);
+    sprintf(response, "success=%d&requestId=%s", success, requestId);
+    esp_mqtt_client_publish(mqtt_client, "esp32/fan", response, 0, 1, 0);    
 }

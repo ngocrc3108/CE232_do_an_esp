@@ -87,7 +87,7 @@ void mqtt_app_start(void)
 {
     esp_mqtt_client_config_t mqtt_cfg = {
         .broker.address.uri = "mqtt://mqtt.flespi.io",
-        .credentials.username = "B98DeTbKkg8XPIVnXlIGl49CVOM0YxApxyTBfS9qZ5bEEWPp5nVggUH1xjPlFgB0",
+        .credentials.username = "uOtUTWCg12RiQ0oWmGCmTwEawGezbS4uwlcg7FkWv15bQhW0NoavLCt58xu8dosx",
     };
 
     mqtt_client = esp_mqtt_client_init(&mqtt_cfg);

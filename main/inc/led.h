@@ -19,5 +19,5 @@ typedef enum {
 void ledInit();
 void ledSetState(Led_State state);
 extern void ledEventHandler(char *query);
-
+void ledResponse(char* query, uint8_t success);
 #endif

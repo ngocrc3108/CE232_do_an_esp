@@ -1,18 +1,7 @@
 #include <stdio.h>
-#include <stdint.h>
-#include <stddef.h>
-#include <string.h>
-#include "esp_wifi.h"
 #include "esp_system.h"
 #include "nvs_flash.h"
-#include "esp_event.h"
-#include "esp_netif.h"
 #include "esp_log.h"
-
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/queue.h"
 
 #include "./inc/mqtt.h"
 #include "./inc/wifi.h"
@@ -26,26 +15,26 @@ void app_main(void)
       ret = nvs_flash_init();
     }
   
-    // wifi_init_sta();
-    // mqtt_app_start();
-    // ledInit();
+    wifi_init_sta();
+    mqtt_app_start();
+    ledInit();
     fanInit();
     doorInit();
 
-    fanSetState(FAN_STATE_ON);
-    while(1) {
-        fanSetLevel(FAN_LEVEL_LOW);
-        vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
-        fanSetLevel(FAN_LEVEL_NORMAL);
-        vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
-        fanSetLevel(FAN_LEVEL_HIGH);
-        vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
-        fanSetState(FAN_STATE_OFF);
-        vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
+    // fanSetState(FAN_STATE_ON);
+    // while(1) {
+    //     fanSetLevel(FAN_LEVEL_LOW);
+    //     vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
+    //     fanSetLevel(FAN_LEVEL_NORMAL);
+    //     vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
+    //     fanSetLevel(FAN_LEVEL_HIGH);
+    //     vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
+    //     fanSetState(FAN_STATE_OFF);
+    //     vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
 
-        doorSetState(DOOR_STATE_OPEN);
-        vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
-        doorSetState(DOOR_STATE_CLOSE);
-        vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
-    }
+    //     doorSetState(DOOR_STATE_OPEN);
+    //     vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
+    //     doorSetState(DOOR_STATE_CLOSE);
+    //     vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
+    // }
 }
