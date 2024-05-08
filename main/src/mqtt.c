@@ -32,11 +32,11 @@ void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event
         ESP_LOGI(TAG, "MQTT_EVENT_CONNECTED");
 
         msg_id = esp_mqtt_client_subscribe(client, LED_ID, 0);
-        ESP_LOGI(TAG, "sent subscribe successful, msg_id=%d", msg_id);
+        ESP_LOGI(TAG, "sent LED subscribe successful, msg_id=%d", msg_id);
         msg_id = esp_mqtt_client_subscribe(client, FAN_ID, 0);
-        ESP_LOGI(TAG, "sent subscribe successful, msg_id=%d", msg_id);
+        ESP_LOGI(TAG, "sent FAN subscribe successful, msg_id=%d", msg_id);
         msg_id = esp_mqtt_client_subscribe(client, DOOR_ID, 0);
-        ESP_LOGI(TAG, "sent subscribe successful, msg_id=%d", msg_id);
+        ESP_LOGI(TAG, "sent DOOR subscribe successful, msg_id=%d", msg_id);
 
         break;
     case MQTT_EVENT_DISCONNECTED:
@@ -87,7 +87,7 @@ void mqtt_app_start(void)
 {
     esp_mqtt_client_config_t mqtt_cfg = {
         .broker.address.uri = "mqtt://mqtt.flespi.io",
-        .credentials.username = "uOtUTWCg12RiQ0oWmGCmTwEawGezbS4uwlcg7FkWv15bQhW0NoavLCt58xu8dosx",
+        .credentials.username = "gXV43pw0d9kkW369RfzdmwoD1X0vI74fWcCT8ABn9S2GqNLlh34GPwKROveuVeaz",
     };
 
     mqtt_client = esp_mqtt_client_init(&mqtt_cfg);

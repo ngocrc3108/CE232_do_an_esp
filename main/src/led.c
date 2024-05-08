@@ -23,9 +23,9 @@ void ledEventHandler(char *query) {
     if(strcmp(cmd, "setState") == 0) {
         char state[10];
         getParameter(query, "state=", state);
-        if(strcmp(state, "on") == 0)
+        if(strcmp(state, "1") == 0)
             ledSetState(LED_STATE_ON);
-        else if(strcmp(state, "off") == 0)
+        else if(strcmp(state, "0") == 0)
             ledSetState(LED_STATE_OFF);
     
     ledResponse(query, 1);

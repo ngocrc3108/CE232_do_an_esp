@@ -6,7 +6,7 @@
 #include "driver/mcpwm.h"
 #include "soc/mcpwm_periph.h"
 
-#define DOOR_ID "mydoor"
+#define DOOR_ID "6612c42ee056da36ad21269f"
 #define DOOR_GPIO 4
 
 typedef enum {

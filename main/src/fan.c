@@ -26,6 +26,8 @@ void fanInit() {
 
 void fanSetState(Fan_State state) {
     // (Tung | Nguyen)
+    fanState = state;
+
     if (state == FAN_STATE_ON) 
     {
         fanSetLevel(fanLevel);
@@ -39,13 +41,17 @@ void fanSetState(Fan_State state) {
 void fanSetLevel(Fan_Level level) {
     // (Tung | Nguyen)
     fanLevel = level;
+
+    if(fanState == FAN_STATE_OFF)
+        return;
+
     if (level == FAN_LEVEL_LOW)
     {
-        mcpwm_set_duty(FAN_MCPWM_UNIT, FAN_MCPWM_TIMER, FAN_MCPWM_GEN, 50);
+        mcpwm_set_duty(FAN_MCPWM_UNIT, FAN_MCPWM_TIMER, FAN_MCPWM_GEN, 30);
     }
     else if (level == FAN_LEVEL_NORMAL)
     {
-        mcpwm_set_duty(FAN_MCPWM_UNIT, FAN_MCPWM_TIMER, FAN_MCPWM_GEN, 75);
+        mcpwm_set_duty(FAN_MCPWM_UNIT, FAN_MCPWM_TIMER, FAN_MCPWM_GEN, 55);
     }
     else if (level == FAN_LEVEL_HIGH)
     {
@@ -59,9 +65,9 @@ void fanEventHandler(char *query) {
     if(strcmp(cmd, "setState") ==0) {
         char state[10];
         getParameter(query, "state=", state);
-        if(strcmp(state, "on"))
+        if(strcmp(state, "1") == 0)
             fanSetState(FAN_STATE_ON);
-        else if(strcmp(state, "off"))
+        else if(strcmp(state, "0") == 0)
             fanSetState(FAN_STATE_OFF);
         ESP_LOGI("FAN", "set state: %s", state);
     } else if(strcmp(cmd, "setLevel") == 0) {
