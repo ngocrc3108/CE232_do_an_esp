@@ -12,7 +12,7 @@
 
 static void doorResponse(char* query, uint8_t success);
 
-static Door_State ledState;
+static Door_State doorState;
 #define SERVO_MIN_PULSEWIDTH 500  // Độ rộng xung tối thiểu (micro giây) cho góc 0 độ
 #define SERVO_MAX_PULSEWIDTH 2500 // Độ rộng xung tối đa (micro giây) cho góc 180 độ
 //#define GPIO_SERVO_PWM 18         // GPIO pin cho PWM của servo
@@ -35,8 +35,9 @@ void doorInit() {
     mcpwm_init(DOOR_MCPWM_UNIT, DOOR_MCPWM_TIMER, &pwm_config);
 
     //TODO: get state from database (Ngoc)
+    doorState = DOOR_STATE_CLOSE;
 
-    doorSetState(ledState);
+    doorSetState(doorState);
 }
 
 void doorSetState(Door_State state) {

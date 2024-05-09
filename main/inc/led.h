@@ -9,7 +9,7 @@
 #include "mqtt.h"
 
 #define LED_ID "6612c416e056da36ad21269c"
-#define LED_GPIO 2
+#define LED_GPIO 5
 
 typedef enum {
     LED_STATE_OFF = 0,

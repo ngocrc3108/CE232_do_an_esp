@@ -22,7 +22,7 @@ void app_main(void)
     doorInit();
 
     // fanSetState(FAN_STATE_ON);
-    while(1) {
+    // while(1) {
         // fanSetLevel(FAN_LEVEL_LOW);
         // vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
         // fanSetLevel(FAN_LEVEL_NORMAL);
@@ -32,9 +32,9 @@ void app_main(void)
         // fanSetState(FAN_STATE_OFF);
         // vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
 
-        doorSetState(DOOR_STATE_OPEN);
-        vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
-        doorSetState(DOOR_STATE_CLOSE);
-        vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
-    }
+        // doorSetState(DOOR_STATE_OPEN);
+        // vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
+        // doorSetState(DOOR_STATE_CLOSE);
+        // vTaskDelay(pdMS_TO_TICKS(3000)); // Hold for 3 second
+    // }
 }

@@ -19,6 +19,8 @@ void fanInit() {
     mcpwm_init(FAN_MCPWM_UNIT, FAN_MCPWM_TIMER, &pwm_config);
 
     //TODO: get level and state from database (Ngoc)
+    fanState = FAN_STATE_OFF;
+    fanLevel = FAN_LEVEL_LOW;
 
     fanSetState(fanState);
     fanSetLevel(fanLevel);
@@ -47,7 +49,7 @@ void fanSetLevel(Fan_Level level) {
 
     if (level == FAN_LEVEL_LOW)
     {
-        mcpwm_set_duty(FAN_MCPWM_UNIT, FAN_MCPWM_TIMER, FAN_MCPWM_GEN, 30);
+        mcpwm_set_duty(FAN_MCPWM_UNIT, FAN_MCPWM_TIMER, FAN_MCPWM_GEN, 40);
     }
     else if (level == FAN_LEVEL_NORMAL)
     {
