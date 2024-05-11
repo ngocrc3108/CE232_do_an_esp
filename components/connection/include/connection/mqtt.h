@@ -13,12 +13,7 @@
 #include "lwip/dns.h"
 #include "lwip/netdb.h"
 
-#include "esp_log.h"
 #include "mqtt_client.h"
-#include "string.h"
-#include "../inc/led.h"
-#include "../inc/fan.h"
-#include "../inc/door.h"
 
 extern esp_mqtt_client_handle_t mqtt_client;
 

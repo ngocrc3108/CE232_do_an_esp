@@ -1,4 +1,11 @@
-#include "./inc/mqtt.h"
+#include "connection/mqtt.h"
+
+#include "esp_log.h"
+#include "string.h"
+
+#include "device/led.h"
+#include "device/fan.h"
+#include "device/door.h"
 
 esp_mqtt_client_handle_t mqtt_client;
 

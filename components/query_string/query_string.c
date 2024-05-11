@@ -1,4 +1,4 @@
-#include "../inc/query_string.h"
+#include "query_string.h"
 
 Get_Parameter_Status getParameter(const char* queryString, const char* parameterName, char* value) {
     char* temp = NULL;

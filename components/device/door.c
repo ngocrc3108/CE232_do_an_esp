@@ -1,11 +1,12 @@
-#include "../inc/door.h"
+#include "device/door.h"
+
 #include "string.h"
 #include "driver/gpio.h"
 #include "driver/mcpwm.h"
 #include "mqtt_client.h"
 #include "esp_log.h"
-#include "../inc/query_string.h"
-#include "../inc/mqtt.h"
+#include "query_string.h"
+#include "connection/mqtt.h"
 
 #define DOOR_MCPWM_UNIT MCPWM_UNIT_1
 #define DOOR_MCPWM_TIMER MCPWM_TIMER_1

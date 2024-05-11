@@ -3,10 +3,10 @@
 
 #include "string.h"
 #include "driver/gpio.h"
-#include "../inc/query_string.h"
+#include "query_string.h"
 #include "stdio.h"
 #include "mqtt_client.h"
-#include "mqtt.h"
+#include "connection/mqtt.h"
 
 #define LED_ID "6612c416e056da36ad21269c"
 #define LED_GPIO 5

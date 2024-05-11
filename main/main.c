@@ -3,8 +3,12 @@
 #include "nvs_flash.h"
 #include "esp_log.h"
 
-#include "./inc/mqtt.h"
-#include "./inc/wifi.h"
+#include "connection/mqtt.h"
+#include "connection/wifi.h"
+
+#include "device/led.h"
+#include "device/fan.h"
+#include "device/door.h"
 
 void app_main(void)
 {

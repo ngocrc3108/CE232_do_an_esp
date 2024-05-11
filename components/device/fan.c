@@ -1,4 +1,4 @@
-#include "../inc/fan.h"
+#include "device/fan.h"
 
 #define FAN_MCPWM_UNIT MCPWM_UNIT_0
 #define FAN_MCPWM_TIMER MCPWM_TIMER_0

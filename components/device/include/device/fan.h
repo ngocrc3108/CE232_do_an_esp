@@ -6,8 +6,8 @@
 #include "driver/mcpwm.h"
 #include "mqtt_client.h"
 #include "esp_log.h"
-#include "../inc/query_string.h"
-#include "mqtt.h"
+#include "query_string.h"
+#include "connection/mqtt.h"
 
 #define FAN_ID "6612c435e056da36ad2126a2"
 #define FAN_GPIO 18
