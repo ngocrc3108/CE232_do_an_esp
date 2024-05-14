@@ -1,5 +1,5 @@
-#ifndef __INC_WIFI_H__
-#define __INC_WIFI_H__
+#ifndef __WIFI_H__
+#define __WIFI_H__
 
 /* WiFi station Example
 

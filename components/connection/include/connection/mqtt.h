@@ -9,13 +9,8 @@
    software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
    CONDITIONS OF ANY KIND, either express or implied.
 */
-#include "lwip/sockets.h"
-#include "lwip/dns.h"
-#include "lwip/netdb.h"
 
-#include "mqtt_client.h"
-
-extern esp_mqtt_client_handle_t mqtt_client;
+#include "esp_event.h"
 
 void log_error_if_nonzero(const char *message, int error_code);
 
@@ -32,5 +27,12 @@ void log_error_if_nonzero(const char *message, int error_code);
 void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data);
 
 void mqtt_app_start(void);
+
+/*
+ * @brief Use this function to send a mqtt message
+ * @param topic mqtt topic
+ * @param data_string payload as null terminated string
+*/
+void mqtt_publish(char* topic, char* data_string);
 
 #endif

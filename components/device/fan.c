@@ -1,8 +1,16 @@
 #include "device/fan.h"
 
-#define FAN_MCPWM_UNIT MCPWM_UNIT_0
-#define FAN_MCPWM_TIMER MCPWM_TIMER_0
-#define FAN_MCPWM_GEN MCPWM_OPR_A
+#include "string.h"
+#include "driver/gpio.h"
+#include "driver/mcpwm.h"
+#include "esp_log.h"
+
+#include "query_string.h"
+#include "connection/mqtt.h"
+
+#define FAN_MCPWM_UNIT              MCPWM_UNIT_0
+#define FAN_MCPWM_TIMER             MCPWM_TIMER_0
+#define FAN_MCPWM_GEN               MCPWM_OPR_A
 
 static Fan_State fanState;
 static Fan_Level fanLevel;
@@ -87,5 +95,5 @@ void fanResponse(char* query, uint8_t success) {
     char requestId[20];
     getParameter(query, "requestId=", requestId);
     sprintf(response, "success=%d&requestId=%s", success, requestId);
-    esp_mqtt_client_publish(mqtt_client, "esp32/fan", response, 0, 1, 0);    
+    mqtt_publish("esp32/fan", response);
 }

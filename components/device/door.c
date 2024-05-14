@@ -3,16 +3,16 @@
 #include "string.h"
 #include "driver/gpio.h"
 #include "driver/mcpwm.h"
-#include "mqtt_client.h"
 #include "esp_log.h"
+
 #include "query_string.h"
 #include "connection/mqtt.h"
 
 #define DOOR_MCPWM_UNIT             MCPWM_UNIT_1
 #define DOOR_MCPWM_TIMER            MCPWM_TIMER_1
 #define DOOR_MCPWM_IO_SIGNAL        MCPWM1A
-#define SERVO_MIN_PULSEWIDTH 500  // Độ rộng xung tối thiểu (micro giây) cho góc 0 độ
-#define SERVO_MAX_PULSEWIDTH 2500 // Độ rộng xung tối đa (micro giây) cho góc 180 độ
+#define SERVO_MIN_PULSEWIDTH        500  // Độ rộng xung tối thiểu (micro giây) cho góc 0 độ
+#define SERVO_MAX_PULSEWIDTH        2500 // Độ rộng xung tối đa (micro giây) cho góc 180 độ
 
 static void doorResponse(char* query, uint8_t success);
 uint32_t servo_per_degree_init(int degree_of_rotation) {
@@ -64,7 +64,7 @@ void doorEventHandler(char *query) {
         getParameter(query, "state=", state);
         if(strcmp(state, "1") == 0)
             doorSetState(DOOR_STATE_OPEN);
-        else if(strcmp(state, "1") == 0)
+        else if(strcmp(state, "0") == 0)
             doorSetState(DOOR_STATE_CLOSE);
         doorResponse(query, 1);
     }    
@@ -75,5 +75,5 @@ static void doorResponse(char* query, uint8_t success) {
     char requestId[20];
     getParameter(query, "requestId=", requestId);
     sprintf(response, "success=%d&requestId=%s", success, requestId);
-    esp_mqtt_client_publish(mqtt_client, "esp32/door", response, 0, 1, 0);    
+    mqtt_publish("esp32/door", response);   
 }

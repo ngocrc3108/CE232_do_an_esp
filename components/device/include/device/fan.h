@@ -1,16 +1,10 @@
-#ifndef __INC_FAN_H__
-#define __INC_FAN_H__
+#ifndef __FAN_H__
+#define __FAN_H__
 
-#include "string.h"
-#include "driver/gpio.h"
-#include "driver/mcpwm.h"
-#include "mqtt_client.h"
-#include "esp_log.h"
-#include "query_string.h"
-#include "connection/mqtt.h"
+#define FAN_ID              "6612c435e056da36ad2126a2"
+#define FAN_GPIO            18
 
-#define FAN_ID "6612c435e056da36ad2126a2"
-#define FAN_GPIO 18
+#include <stdint.h>
 
 typedef enum {
     FAN_STATE_OFF = 0,
@@ -26,6 +20,6 @@ typedef enum {
 void fanInit(); // (Ngoc)
 void fanSetState(Fan_State state); // (Tung | Nguyen)
 void fanSetLevel(Fan_Level level); // (Tung | Nguyen)
-extern void fanEventHandler(char *query); // (Ngoc)
+void fanEventHandler(char *query); // (Ngoc)
 void fanResponse(char* query, uint8_t success);
 #endif

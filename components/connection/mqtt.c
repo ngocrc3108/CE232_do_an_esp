@@ -1,5 +1,6 @@
 #include "connection/mqtt.h"
 
+#include "mqtt_client.h"
 #include "esp_log.h"
 #include "string.h"
 
@@ -7,9 +8,12 @@
 #include "device/fan.h"
 #include "device/door.h"
 
+#define MQTT_URL            "mqtt://mqtt.flespi.io"
+#define MQTT_TOKEN          "ftEeUSBBaVIR7IjREV1ZCQ7PyL3bcHmuIysQbWwXOdJy6NZx8I8Kb6GAlJKqNh0T"
+
 esp_mqtt_client_handle_t mqtt_client;
 
-static const char *TAG = "mqtt_example";
+static const char *TAG = "MQTT";
 
 void log_error_if_nonzero(const char *message, int error_code)
 {
@@ -93,12 +97,16 @@ void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event
 void mqtt_app_start(void)
 {
     esp_mqtt_client_config_t mqtt_cfg = {
-        .broker.address.uri = "mqtt://mqtt.flespi.io",
-        .credentials.username = "ftEeUSBBaVIR7IjREV1ZCQ7PyL3bcHmuIysQbWwXOdJy6NZx8I8Kb6GAlJKqNh0T",
+        .broker.address.uri = MQTT_URL,
+        .credentials.username = MQTT_TOKEN,
     };
 
     mqtt_client = esp_mqtt_client_init(&mqtt_cfg);
     /* The last argument may be used to pass data to the event handler, in this example mqtt_event_handler */
     esp_mqtt_client_register_event(mqtt_client, ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
     esp_mqtt_client_start(mqtt_client);
+}
+
+void mqtt_publish(char* topic, char* data_string) {
+    esp_mqtt_client_publish(mqtt_client, topic, data_string, 0, 2, 0);
 }
