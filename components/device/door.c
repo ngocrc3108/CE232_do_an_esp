@@ -8,22 +8,22 @@
 #include "query_string.h"
 #include "connection/mqtt.h"
 
-#define DOOR_MCPWM_UNIT MCPWM_UNIT_1
-#define DOOR_MCPWM_TIMER MCPWM_TIMER_1
-
-static void doorResponse(char* query, uint8_t success);
-
-static Door_State doorState;
+#define DOOR_MCPWM_UNIT             MCPWM_UNIT_1
+#define DOOR_MCPWM_TIMER            MCPWM_TIMER_1
+#define DOOR_MCPWM_IO_SIGNAL        MCPWM1A
 #define SERVO_MIN_PULSEWIDTH 500  // Độ rộng xung tối thiểu (micro giây) cho góc 0 độ
 #define SERVO_MAX_PULSEWIDTH 2500 // Độ rộng xung tối đa (micro giây) cho góc 180 độ
-//#define GPIO_SERVO_PWM 18         // GPIO pin cho PWM của servo
+
+static void doorResponse(char* query, uint8_t success);
 uint32_t servo_per_degree_init(int degree_of_rotation) {
     return SERVO_MIN_PULSEWIDTH + (degree_of_rotation * (SERVO_MAX_PULSEWIDTH - SERVO_MIN_PULSEWIDTH) / 180);
 }
 
+static Door_State doorState;
+
 void doorInit() {
     // Initialize MCPWM module
-    mcpwm_gpio_init(DOOR_MCPWM_UNIT, MCPWM0A, DOOR_GPIO); // GPIO 18 as PWM0A, to drive a motor
+    mcpwm_gpio_init(DOOR_MCPWM_UNIT, DOOR_MCPWM_IO_SIGNAL, DOOR_GPIO);
     // Configure MCPWM configuration parameters
     mcpwm_config_t pwm_config;
     pwm_config.frequency = 50;  // frequency = 1kHz
@@ -32,7 +32,7 @@ void doorInit() {
     pwm_config.counter_mode = MCPWM_UP_COUNTER;
     pwm_config.duty_mode = MCPWM_DUTY_MODE_0;
     
-    // Set MCPWM configuration for the MCPWM unit 0, timer 0
+    // Set MCPWM configuration for the MCPWM unit x, timer x
     mcpwm_init(DOOR_MCPWM_UNIT, DOOR_MCPWM_TIMER, &pwm_config);
 
     //TODO: get state from database (Ngoc)
