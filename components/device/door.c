@@ -10,7 +10,9 @@
 
 #define DOOR_MCPWM_UNIT             MCPWM_UNIT_1
 #define DOOR_MCPWM_TIMER            MCPWM_TIMER_1
+#define DOOR_MCPWM_GEN               MCPWM_OPR_A
 #define DOOR_MCPWM_IO_SIGNAL        MCPWM1A
+
 #define SERVO_MIN_PULSEWIDTH        500  // Độ rộng xung tối thiểu (micro giây) cho góc 0 độ
 #define SERVO_MAX_PULSEWIDTH        2500 // Độ rộng xung tối đa (micro giây) cho góc 180 độ
 
@@ -26,7 +28,7 @@ void doorInit() {
     mcpwm_gpio_init(DOOR_MCPWM_UNIT, DOOR_MCPWM_IO_SIGNAL, DOOR_GPIO);
     // Configure MCPWM configuration parameters
     mcpwm_config_t pwm_config;
-    pwm_config.frequency = 50;  // frequency = 1kHz
+    pwm_config.frequency = 50;  // frequency = 50 Hz
     pwm_config.cmpr_a = 0;        // duty cycle of PWMxA = 0
     pwm_config.cmpr_b = 0;        // duty cycle of PWMxB = 0
     pwm_config.counter_mode = MCPWM_UP_COUNTER;
@@ -45,11 +47,11 @@ void doorSetState(Door_State state) {
     // (Tung | Nguyen)
     if (state == DOOR_STATE_OPEN)
     {
-        mcpwm_set_duty_in_us(DOOR_MCPWM_UNIT, DOOR_MCPWM_TIMER, MCPWM_OPR_A, servo_per_degree_init(90));
+        mcpwm_set_duty_in_us(DOOR_MCPWM_UNIT, DOOR_MCPWM_TIMER, DOOR_MCPWM_GEN, servo_per_degree_init(90));
     }
     else if (state == DOOR_STATE_CLOSE)
     {
-        mcpwm_set_duty_in_us(DOOR_MCPWM_UNIT, DOOR_MCPWM_TIMER, MCPWM_OPR_A, servo_per_degree_init(0));
+        mcpwm_set_duty_in_us(DOOR_MCPWM_UNIT, DOOR_MCPWM_TIMER, DOOR_MCPWM_GEN, servo_per_degree_init(0));
     }
     
     

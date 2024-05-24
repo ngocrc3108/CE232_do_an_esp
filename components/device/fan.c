@@ -11,13 +11,14 @@
 #define FAN_MCPWM_UNIT              MCPWM_UNIT_0
 #define FAN_MCPWM_TIMER             MCPWM_TIMER_0
 #define FAN_MCPWM_GEN               MCPWM_OPR_A
+#define FAN_MCPWM_IO_SIGNAL        MCPWM0A
 
 static Fan_State fanState;
 static Fan_Level fanLevel;
 
 void fanInit() {
     //Initialize MCPWM
-    mcpwm_gpio_init(FAN_MCPWM_UNIT, MCPWM0A, FAN_GPIO);
+    mcpwm_gpio_init(FAN_MCPWM_UNIT, FAN_MCPWM_IO_SIGNAL, FAN_GPIO);
     mcpwm_config_t pwm_config;
     pwm_config.frequency = 50;  // frequency = 50Hz
     pwm_config.cmpr_a = 0;        // duty cycle of PWMxA = 0
