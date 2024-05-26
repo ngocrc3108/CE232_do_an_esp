@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define LED_ID              "6612c416e056da36ad21269c"
+#define LED_ID              "6649a8168950f2c97e5cc8cd"
 #define LED_GPIO            5
 
 typedef enum {
