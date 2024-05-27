@@ -77,5 +77,5 @@ static void doorResponse(char* query, uint8_t success) {
     char requestId[20];
     getParameter(query, "requestId=", requestId);
     sprintf(response, "success=%d&requestId=%s", success, requestId);
-    mqtt_publish("esp32/door", response);   
+    mqtt_publish("esp32/door/response", response);   
 }
