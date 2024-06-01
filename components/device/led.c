@@ -42,7 +42,10 @@ void ledEventHandler(char *query) {
 void ledResponse(char* query, uint8_t success) {
     char response[50];
     char requestId[20];
-    getParameter(query, "requestId=", requestId);
+
+    if(getParameter(query, "requestId=", requestId) == GP_ERR)
+        return;
+
     sprintf(response, "success=%d&requestId=%s", success, requestId);
     mqtt_publish("esp32/led/response", response); 
 }
