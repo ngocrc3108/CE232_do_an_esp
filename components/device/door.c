@@ -69,7 +69,15 @@ void doorEventHandler(char *query) {
         else if(strcmp(state, "0") == 0)
             doorSetState(DOOR_STATE_CLOSE);
         doorResponse(query, 1);
-    }    
+    }
+    else if(strcmp(cmd, "sync") == 0) {
+        char state[10];
+        getParameter(query, "state=", state);
+        if(strcmp(state, "1") == 0)
+            doorSetState(DOOR_STATE_OPEN);
+        else if(strcmp(state, "0") == 0)
+            doorSetState(DOOR_STATE_CLOSE);
+    }
 }
 
 static void doorResponse(char* query, uint8_t success) {
@@ -78,4 +86,11 @@ static void doorResponse(char* query, uint8_t success) {
     getParameter(query, "requestId=", requestId);
     sprintf(response, "success=%d&requestId=%s", success, requestId);
     mqtt_publish("esp32/door/response", response);   
+}
+
+void doorsendSyncRequest() {
+    ESP_LOGI("DEBUG", "door send sync request");
+    char buffer[50];
+    sprintf(buffer, "id=%s", DOOR_ID);
+    mqtt_publish("esp32/door/sync", buffer);
 }

@@ -12,5 +12,5 @@ typedef enum {
 void doorInit(); // (Ngoc)
 void doorSetState(Door_State state); // (Tung | Nguyen)
 void doorEventHandler(char *query); // (Ngoc)
-
+void doorsendSyncRequest();
 #endif

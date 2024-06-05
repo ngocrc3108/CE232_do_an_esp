@@ -81,14 +81,28 @@ void fanEventHandler(char *query) {
         else if(strcmp(state, "0") == 0)
             fanSetState(FAN_STATE_OFF);
         ESP_LOGI("FAN", "set state: %s", state);
+        fanResponse(query, 1);
     } else if(strcmp(cmd, "setLevel") == 0) {
         char level[10];
         getParameter(query, "level=", level);
         fanSetLevel((Fan_Level)(level[0] - '0')); // level = '0' | '1' | '2'
         ESP_LOGI("FAN", "set level: %s", level);
+        fanResponse(query, 1);
+    } else if(strcmp(cmd, "sync") == 0) {
+        char state[10];
+        getParameter(query, "state=", state);
+        if(strcmp(state, "1") == 0)
+            fanSetState(FAN_STATE_ON);
+        else if(strcmp(state, "0") == 0)
+            fanSetState(FAN_STATE_OFF);
+        ESP_LOGI("FAN", "set state: %s", state);
+
+        char level[10];
+        getParameter(query, "level=", level);
+        fanSetLevel((Fan_Level)(level[0] - '0')); // level = '0' | '1' | '2'
+        ESP_LOGI("FAN", "set level: %s", level);                
     }
 
-    fanResponse(query, 1);
 }
 
 void fanResponse(char* query, uint8_t success) {
@@ -97,4 +111,11 @@ void fanResponse(char* query, uint8_t success) {
     getParameter(query, "requestId=", requestId);
     sprintf(response, "success=%d&requestId=%s", success, requestId);
     mqtt_publish("esp32/fan/response", response);
+}
+
+void fansendSyncRequest() {
+    ESP_LOGI("DEBUG", "fan send sync request");
+    char buffer[50];
+    sprintf(buffer, "id=%s", FAN_ID);
+    mqtt_publish("esp32/fan/sync", buffer);
 }

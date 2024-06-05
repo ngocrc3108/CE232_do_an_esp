@@ -22,4 +22,6 @@ void fanSetState(Fan_State state); // (Tung | Nguyen)
 void fanSetLevel(Fan_Level level); // (Tung | Nguyen)
 void fanEventHandler(char *query); // (Ngoc)
 void fanResponse(char* query, uint8_t success);
+void fansendSyncRequest();
+
 #endif

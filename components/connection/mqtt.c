@@ -12,6 +12,7 @@
 #define MQTT_TOKEN          "ftEeUSBBaVIR7IjREV1ZCQ7PyL3bcHmuIysQbWwXOdJy6NZx8I8Kb6GAlJKqNh0T"
 
 esp_mqtt_client_handle_t mqtt_client;
+int message_ids[3];
 
 static const char *TAG = "MQTT";
 
@@ -42,12 +43,12 @@ void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event
     case MQTT_EVENT_CONNECTED:
         ESP_LOGI(TAG, "MQTT_EVENT_CONNECTED");
 
-        msg_id = esp_mqtt_client_subscribe(client, LED_ID, 0);
-        ESP_LOGI(TAG, "sent LED subscribe successful, msg_id=%d", msg_id);
-        msg_id = esp_mqtt_client_subscribe(client, FAN_ID, 0);
-        ESP_LOGI(TAG, "sent FAN subscribe successful, msg_id=%d", msg_id);
-        msg_id = esp_mqtt_client_subscribe(client, DOOR_ID, 0);
-        ESP_LOGI(TAG, "sent DOOR subscribe successful, msg_id=%d", msg_id);
+        message_ids[0] = esp_mqtt_client_subscribe(client, LED_ID, 0);
+        ESP_LOGI(TAG, "sent LED subscribe successful, msg_id=%d", message_ids[0]);
+        message_ids[1] = esp_mqtt_client_subscribe(client, FAN_ID, 0);
+        ESP_LOGI(TAG, "sent FAN subscribe successful, msg_id=%d", message_ids[1]);
+        message_ids[2] = esp_mqtt_client_subscribe(client, DOOR_ID, 0);
+        ESP_LOGI(TAG, "sent DOOR subscribe successful, msg_id=%d", message_ids[2]);
 
         break;
     case MQTT_EVENT_DISCONNECTED:
@@ -56,6 +57,12 @@ void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event
 
     case MQTT_EVENT_SUBSCRIBED:
         ESP_LOGI(TAG, "MQTT_EVENT_SUBSCRIBED, msg_id=%d", event->msg_id);
+        if(event->msg_id == message_ids[0])
+            ledsendSyncRequest();
+        if(event->msg_id == message_ids[1])
+            fansendSyncRequest();
+        if(event->msg_id == message_ids[2])
+            doorsendSyncRequest();
         break;
     case MQTT_EVENT_UNSUBSCRIBED:
         ESP_LOGI(TAG, "MQTT_EVENT_UNSUBSCRIBED, msg_id=%d", event->msg_id);

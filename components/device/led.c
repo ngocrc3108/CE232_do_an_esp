@@ -37,6 +37,14 @@ void ledEventHandler(char *query) {
     
     ledResponse(query, 1);
     }
+    if(strcmp(cmd, "sync") == 0) {
+        char state[10];
+        getParameter(query, "state=", state);
+        if(strcmp(state, "1") == 0)
+            ledSetState(LED_STATE_ON);
+        else if(strcmp(state, "0") == 0)
+            ledSetState(LED_STATE_OFF);    
+    }
 }
 
 void ledResponse(char* query, uint8_t success) {
@@ -48,4 +56,11 @@ void ledResponse(char* query, uint8_t success) {
 
     sprintf(response, "success=%d&requestId=%s", success, requestId);
     mqtt_publish("esp32/led/response", response); 
+}
+
+void ledsendSyncRequest() {
+    ESP_LOGI("DEBUG", "led send sync request");
+    char buffer[50];
+    sprintf(buffer, "id=%s", LED_ID);
+    mqtt_publish("esp32/led/sync", buffer);
 }
