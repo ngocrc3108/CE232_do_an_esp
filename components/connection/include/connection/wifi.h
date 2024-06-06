@@ -10,6 +10,10 @@
    CONDITIONS OF ANY KIND, either express or implied.
 */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "esp_event.h"
 
 /* The examples use WiFi configuration that you can set via project configuration menu
@@ -30,4 +34,9 @@
 void event_handler(void* arg, esp_event_base_t event_base,
                                 int32_t event_id, void* event_data);
 void wifi_init_sta(void);
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif

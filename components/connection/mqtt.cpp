@@ -3,17 +3,14 @@
 #include "mqtt_client.h"
 #include "esp_log.h"
 #include "string.h"
+#include <stdio.h>
 
-#include "device/led.h"
-#include "device/fan.h"
-#include "device/door.h"
-#include "built_in_led/led.h"
+#include "device/device.h"
 
 #define MQTT_URL            "mqtt://mqtt.flespi.io"
 #define MQTT_TOKEN          "ftEeUSBBaVIR7IjREV1ZCQ7PyL3bcHmuIysQbWwXOdJy6NZx8I8Kb6GAlJKqNh0T"
 
 esp_mqtt_client_handle_t mqtt_client;
-int message_ids[3];
 
 static const char *TAG = "MQTT";
 
@@ -37,35 +34,19 @@ void log_error_if_nonzero(const char *message, int error_code)
 void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data)
 {
     ESP_LOGD(TAG, "Event dispatched from event loop base=%s, event_id=%" PRIi32 "", base, event_id);
-    esp_mqtt_event_handle_t event = event_data;
-    esp_mqtt_client_handle_t client = event->client;
-    int msg_id;
+    esp_mqtt_event_handle_t event = (esp_mqtt_event_handle_t)event_data;
     switch ((esp_mqtt_event_id_t)event_id) {
     case MQTT_EVENT_CONNECTED:
         ESP_LOGI(TAG, "MQTT_EVENT_CONNECTED");
-
-        message_ids[0] = esp_mqtt_client_subscribe(client, LED_ID, 0);
-        ESP_LOGI(TAG, "sent LED subscribe successful, msg_id=%d", message_ids[0]);
-        message_ids[1] = esp_mqtt_client_subscribe(client, FAN_ID, 0);
-        ESP_LOGI(TAG, "sent FAN subscribe successful, msg_id=%d", message_ids[1]);
-        message_ids[2] = esp_mqtt_client_subscribe(client, DOOR_ID, 0);
-        ESP_LOGI(TAG, "sent DOOR subscribe successful, msg_id=%d", message_ids[2]);
-
-        built_in_led_set_state(LED_ON);
+        Device::subscribeAll();
         break;
     case MQTT_EVENT_DISCONNECTED:
         ESP_LOGI(TAG, "MQTT_EVENT_DISCONNECTED");
-        built_in_led_set_state(LED_BLINK);
         break;
 
     case MQTT_EVENT_SUBSCRIBED:
         ESP_LOGI(TAG, "MQTT_EVENT_SUBSCRIBED, msg_id=%d", event->msg_id);
-        if(event->msg_id == message_ids[0])
-            ledsendSyncRequest();
-        if(event->msg_id == message_ids[1])
-            fansendSyncRequest();
-        if(event->msg_id == message_ids[2])
-            doorsendSyncRequest();
+        Device::onSubscribe(event->msg_id);
         break;
     case MQTT_EVENT_UNSUBSCRIBED:
         ESP_LOGI(TAG, "MQTT_EVENT_UNSUBSCRIBED, msg_id=%d", event->msg_id);
@@ -81,12 +62,7 @@ void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event
         sprintf(topic, "%.*s", event->topic_len, event->topic);
         ESP_LOGI("TOPIC", "%s", topic);
         ESP_LOGI("QUERY", "%s", query_string);
-        if(strcmp(topic, LED_ID) == 0)
-            ledEventHandler(query_string);
-        else if(strcmp(topic, FAN_ID) == 0)
-            fanEventHandler(query_string);
-        else if(strcmp(topic, DOOR_ID) == 0)
-            doorEventHandler(query_string);
+        Device::onMessage(topic, query_string);
         break;
     case MQTT_EVENT_ERROR:
         ESP_LOGI(TAG, "MQTT_EVENT_ERROR");
@@ -106,17 +82,20 @@ void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event
 
 void mqtt_app_start(void)
 {
-    esp_mqtt_client_config_t mqtt_cfg = {
-        .broker.address.uri = MQTT_URL,
-        .credentials.username = MQTT_TOKEN,
-    };
+    esp_mqtt_client_config_t mqtt_cfg = {};
+    mqtt_cfg.broker.address.uri = MQTT_URL;
+    mqtt_cfg.credentials.username = MQTT_TOKEN;
 
     mqtt_client = esp_mqtt_client_init(&mqtt_cfg);
     /* The last argument may be used to pass data to the event handler, in this example mqtt_event_handler */
-    esp_mqtt_client_register_event(mqtt_client, ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
+    esp_mqtt_client_register_event(mqtt_client, (esp_mqtt_event_id_t)ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
     esp_mqtt_client_start(mqtt_client);
 }
 
-void mqtt_publish(char* topic, char* data_string) {
-    esp_mqtt_client_publish(mqtt_client, topic, data_string, 0, 2, 0);
+int mqtt_publish(char* topic, char* data_string) {
+    return esp_mqtt_client_publish(mqtt_client, topic, data_string, 0, 2, 0);
+}
+
+int mqtt_subscribe(char* topic) {
+    return esp_mqtt_client_subscribe(mqtt_client, topic, 0);
 }

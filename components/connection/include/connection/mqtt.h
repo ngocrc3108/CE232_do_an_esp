@@ -10,6 +10,10 @@
    CONDITIONS OF ANY KIND, either express or implied.
 */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "esp_event.h"
 
 void log_error_if_nonzero(const char *message, int error_code);
@@ -33,6 +37,12 @@ void mqtt_app_start(void);
  * @param topic mqtt topic
  * @param data_string payload as null terminated string
 */
-void mqtt_publish(char* topic, char* data_string);
+int mqtt_publish(char* topic, char* data_string);
+
+int mqtt_subscribe(char* topic);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

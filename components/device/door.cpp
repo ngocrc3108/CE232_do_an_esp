@@ -16,16 +16,13 @@
 #define SERVO_MIN_PULSEWIDTH        500  // Độ rộng xung tối thiểu (micro giây) cho góc 0 độ
 #define SERVO_MAX_PULSEWIDTH        2500 // Độ rộng xung tối đa (micro giây) cho góc 180 độ
 
-static void doorResponse(char* query, uint8_t success);
 uint32_t servo_per_degree_init(int degree_of_rotation) {
     return SERVO_MIN_PULSEWIDTH + (degree_of_rotation * (SERVO_MAX_PULSEWIDTH - SERVO_MIN_PULSEWIDTH) / 180);
 }
 
-static Door_State doorState;
-
-void doorInit() {
+Door::Door(const char* id, gpio_num_t gpio_num) : Device(id, gpio_num) {
     // Initialize MCPWM module
-    mcpwm_gpio_init(DOOR_MCPWM_UNIT, DOOR_MCPWM_IO_SIGNAL, DOOR_GPIO);
+    mcpwm_gpio_init(DOOR_MCPWM_UNIT, DOOR_MCPWM_IO_SIGNAL, gpio_num);
     // Configure MCPWM configuration parameters
     mcpwm_config_t pwm_config;
     pwm_config.frequency = 50;  // frequency = 50 Hz
@@ -37,60 +34,14 @@ void doorInit() {
     // Set MCPWM configuration for the MCPWM unit x, timer x
     mcpwm_init(DOOR_MCPWM_UNIT, DOOR_MCPWM_TIMER, &pwm_config);
 
-    //TODO: get state from database (Ngoc)
-    doorState = DOOR_STATE_CLOSE;
-
-    doorSetState(doorState);
+    sprintf(type_tring, "door");
 }
 
-void doorSetState(Door_State state) {
-    // (Tung | Nguyen)
-    if (state == DOOR_STATE_OPEN)
-    {
+void Door::setState(Device_state_t state) {
+    this->state = state;
+
+    if (state == DEVICE_STATE_ON) 
         mcpwm_set_duty_in_us(DOOR_MCPWM_UNIT, DOOR_MCPWM_TIMER, DOOR_MCPWM_GEN, servo_per_degree_init(90));
-    }
-    else if (state == DOOR_STATE_CLOSE)
-    {
-        mcpwm_set_duty_in_us(DOOR_MCPWM_UNIT, DOOR_MCPWM_TIMER, DOOR_MCPWM_GEN, servo_per_degree_init(0));
-    }
-    
-    
-} 
-void doorEventHandler(char *query) {
-    // (Ngoc)
-    char cmd[10];
-    getParameter(query, "cmd=", cmd);
-
-    if(strcmp(cmd, "setState") == 0) {
-        char state[10];
-        getParameter(query, "state=", state);
-        if(strcmp(state, "1") == 0)
-            doorSetState(DOOR_STATE_OPEN);
-        else if(strcmp(state, "0") == 0)
-            doorSetState(DOOR_STATE_CLOSE);
-        doorResponse(query, 1);
-    }
-    else if(strcmp(cmd, "sync") == 0) {
-        char state[10];
-        getParameter(query, "state=", state);
-        if(strcmp(state, "1") == 0)
-            doorSetState(DOOR_STATE_OPEN);
-        else if(strcmp(state, "0") == 0)
-            doorSetState(DOOR_STATE_CLOSE);
-    }
-}
-
-static void doorResponse(char* query, uint8_t success) {
-    char response[50];
-    char requestId[20];
-    getParameter(query, "requestId=", requestId);
-    sprintf(response, "success=%d&requestId=%s", success, requestId);
-    mqtt_publish("esp32/door/response", response);   
-}
-
-void doorsendSyncRequest() {
-    ESP_LOGI("DEBUG", "door send sync request");
-    char buffer[50];
-    sprintf(buffer, "id=%s", DOOR_ID);
-    mqtt_publish("esp32/door/sync", buffer);
+    else if (state == DEVICE_STATE_OFF)
+        mcpwm_set_duty_in_us(DOOR_MCPWM_UNIT, DOOR_MCPWM_TIMER, DOOR_MCPWM_GEN, servo_per_degree_init(0));  
 }
