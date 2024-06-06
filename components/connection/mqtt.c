@@ -7,6 +7,7 @@
 #include "device/led.h"
 #include "device/fan.h"
 #include "device/door.h"
+#include "built_in_led/led.h"
 
 #define MQTT_URL            "mqtt://mqtt.flespi.io"
 #define MQTT_TOKEN          "ftEeUSBBaVIR7IjREV1ZCQ7PyL3bcHmuIysQbWwXOdJy6NZx8I8Kb6GAlJKqNh0T"
@@ -50,9 +51,11 @@ void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event
         message_ids[2] = esp_mqtt_client_subscribe(client, DOOR_ID, 0);
         ESP_LOGI(TAG, "sent DOOR subscribe successful, msg_id=%d", message_ids[2]);
 
+        built_in_led_set_state(LED_ON);
         break;
     case MQTT_EVENT_DISCONNECTED:
         ESP_LOGI(TAG, "MQTT_EVENT_DISCONNECTED");
+        built_in_led_set_state(LED_BLINK);
         break;
 
     case MQTT_EVENT_SUBSCRIBED:

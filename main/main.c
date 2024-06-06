@@ -9,6 +9,7 @@
 #include "device/led.h"
 #include "device/fan.h"
 #include "device/door.h"
+#include "built_in_led/led.h"
 
 void app_main(void)
 {
@@ -18,7 +19,10 @@ void app_main(void)
       ESP_ERROR_CHECK(nvs_flash_erase());
       ret = nvs_flash_init();
     }
-  
+
+    built_in_led_init();
+    built_in_led_set_state(LED_BLINK);
+    
     wifi_init_sta();
     mqtt_app_start();
     ledInit();
