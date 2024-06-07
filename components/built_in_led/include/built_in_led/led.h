@@ -3,8 +3,9 @@
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
+#include "driver/gpio.h"
 
-#define LED_PIN             2
+#define LED_PIN             GPIO_NUM_2
 
 typedef enum {
     LED_OFF = 0,
