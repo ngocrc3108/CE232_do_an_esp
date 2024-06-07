@@ -54,17 +54,14 @@ void Device::printInfo() {
     ESP_LOGI("INFO", "id: %s, type: %s, state: %d", id, type_tring, state);
 }
 
-void Device::sendResponse(char* query, uint8_t success) {
+void Device::sendACK(char* query) {
     char response[50];
-    char requestId[20];
-    char topic[50];
+    char messageID[20];
 
-    getParameter(query, "requestId=", requestId);
-    sprintf(response, "success=%d&requestId=%s", success, requestId);
+    getParameter(query, "messageID=", messageID);
+    sprintf(response, "messageID=%s", messageID);
 
-    sprintf(topic, "esp32/%s/response", type_tring);
-
-    mqtt_publish(topic, response);    
+    mqtt_publish("esp32/ack", response);    
 }
 
 void Device::eventHandler(char* query) {
@@ -78,7 +75,7 @@ void Device::eventHandler(char* query) {
     }
     
     if(strcmp(cmd, "setState") == 0) {
-        sendResponse(query, 1);
+        sendACK(query);
     }
 }
 

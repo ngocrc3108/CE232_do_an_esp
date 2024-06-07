@@ -25,7 +25,7 @@ public:
     virtual void setState(Device_state_t state) = 0;
     virtual void eventHandler(char* query);
     virtual void printInfo();
-    void sendResponse(char* query, uint8_t success);
+    void sendACK(char* query);
     void sendSyncRequest();
     int subscribe();
     static void printAll();
