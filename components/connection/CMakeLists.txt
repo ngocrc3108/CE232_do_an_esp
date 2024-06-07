@@ -1,5 +1,5 @@
 idf_component_register (
-    SRCS "mqtt.cpp" "wifi.c"
+    SRCS "wifi.cpp" "mqtt.cpp"
     INCLUDE_DIRS "include"
     REQUIRES mqtt esp_wifi nvs_flash device
 )

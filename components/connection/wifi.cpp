@@ -74,10 +74,12 @@ void wifi_init_sta(void)
              * to WIFI_AUTH_WEP/WIFI_AUTH_WPA_PSK and set the password with length and format matching to
              * WIFI_AUTH_WEP/WIFI_AUTH_WPA_PSK standards.
              */
-            .threshold.authmode = WIFI_AUTH_WPA2_PSK,
+            .threshold = {
+                .authmode = WIFI_AUTH_WPA2_PSK,
+            },
             .sae_pwe_h2e = WPA3_SAE_PWE_BOTH,
-            .sae_h2e_identifier = "",
-        },
+            .sae_h2e_identifier = ""
+        }
     };
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA) );
     ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config) );
