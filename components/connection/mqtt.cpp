@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 #include "device/device.h"
+#include "built_in_led/led.h"
 
 #define MQTT_URL            "mqtt://mqtt.flespi.io"
 #define MQTT_TOKEN          "ftEeUSBBaVIR7IjREV1ZCQ7PyL3bcHmuIysQbWwXOdJy6NZx8I8Kb6GAlJKqNh0T"
@@ -39,9 +40,11 @@ void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event
     case MQTT_EVENT_CONNECTED:
         ESP_LOGI(TAG, "MQTT_EVENT_CONNECTED");
         Device::subscribeAll();
+        built_in_led_set_state(LED_ON);
         break;
     case MQTT_EVENT_DISCONNECTED:
         ESP_LOGI(TAG, "MQTT_EVENT_DISCONNECTED");
+        built_in_led_set_state(LED_BLINK);
         break;
 
     case MQTT_EVENT_SUBSCRIBED:

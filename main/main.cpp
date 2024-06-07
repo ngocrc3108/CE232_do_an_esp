@@ -10,6 +10,7 @@
 #include "device/led.h"
 #include "device/fan.h"
 #include "device/door.h"
+#include "built_in_led/led.h"
 
 #define LED_ID              "6649a8168950f2c97e5cc8cd"
 #define LED_GPIO            GPIO_NUM_5
@@ -28,6 +29,9 @@ extern "C" void app_main(void) {
     ESP_ERROR_CHECK(nvs_flash_erase());
     ret = nvs_flash_init();
   }
+
+  built_in_led_init();
+  built_in_led_set_state(LED_BLINK);
 
   new Led(LED_ID, LED_GPIO);
   new Door(DOOR_ID, DOOR_GPIO);
