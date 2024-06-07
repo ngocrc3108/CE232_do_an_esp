@@ -17,6 +17,7 @@ public:
     Fan(const char* id, gpio_num_t gpio_num);
     virtual void setState(Device_state_t state);
     virtual void eventHandler(char* query);
+    virtual void printInfo();
     void setLevel(Fan_level_t level);
 };
 

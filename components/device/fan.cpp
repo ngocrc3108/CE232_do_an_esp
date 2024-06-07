@@ -73,3 +73,7 @@ void Fan::eventHandler(char* query) {
         setLevel((Fan_level_t)(level[0] - '0')); // level = '0' | '1' | '2'       
     }
 }
+
+void Fan::printInfo() {
+    ESP_LOGI("INFO", "id: %s, type: %s, state: %d, level: %d", id, type_tring, state, level);
+}
