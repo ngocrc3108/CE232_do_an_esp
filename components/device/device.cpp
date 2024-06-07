@@ -29,6 +29,11 @@ void Device::onMessage(char* topic, char* payload) {
         }
 }
 
+/*
+* @brief Sau khi gọi hàm subscribeAll, nếu mqtt broker xử lí thành công yêu cần subscribe thì sẽ trả về
+* esp32 một event MQTT_EVENT_SUBSCRIBED kèm subscribe_id, kiểm tra xem subscribe_id đó thuộc về device
+* nào và gửi lệnh sync (đảm bảo subscribe trước khi publish).
+*/
 void Device::onSubscribe(int subscribe_id) {
     for(int i = 0; i < Device::device_count; i++)
         if(Device::device_ptrs[i]->subscribe_id == subscribe_id) {
@@ -37,6 +42,9 @@ void Device::onSubscribe(int subscribe_id) {
         }
 }
 
+/*
+* @brief subscribe to mqtt topic (device id) for all device.
+*/
 void Device::subscribeAll() {
     for(int i = 0; i < Device::device_count; i++)
         Device::device_ptrs[i]->subscribe();    
