@@ -30,23 +30,25 @@ Fan::Fan(const char* id, gpio_num_t gpio_num) : Device(id, gpio_num) {
 
 void Fan::setState(Device_state_t state) {
     this->state = state;
-
-    if (state == DEVICE_STATE_ON) 
-        setLevel(level);
-    else if  (state == DEVICE_STATE_OFF)
-        mcpwm_set_duty(FAN_MCPWM_UNIT, FAN_MCPWM_TIMER, FAN_MCPWM_GEN, 0);  
+    operate();
 }
 
 void Fan::setLevel(Fan_level_t level) {
-    if(state == DEVICE_STATE_OFF)
-        return;
+    this->level = level;
+    operate();
+}
 
-    if (level == FAN_LEVEL_LOW)
-        mcpwm_set_duty(FAN_MCPWM_UNIT, FAN_MCPWM_TIMER, FAN_MCPWM_GEN, 40);
-    else if (level == FAN_LEVEL_NORMAL)
-        mcpwm_set_duty(FAN_MCPWM_UNIT, FAN_MCPWM_TIMER, FAN_MCPWM_GEN, 55);
-    else if (level == FAN_LEVEL_HIGH)
-        mcpwm_set_duty(FAN_MCPWM_UNIT, FAN_MCPWM_TIMER, FAN_MCPWM_GEN, 100);
+void Fan::operate() {
+    float duty = 0; // default duty for off state.
+    if(state == DEVICE_STATE_ON)
+        switch(level) {
+            case FAN_LEVEL_LOW:     duty = 45; break;
+            case FAN_LEVEL_NORMAL:  duty = 60; break;
+            case FAN_LEVEL_HIGH:    duty = 100; break;
+            default:                duty = 0; break;
+        }
+
+    mcpwm_set_duty(FAN_MCPWM_UNIT, FAN_MCPWM_TIMER, FAN_MCPWM_GEN, duty);
 }
 
 void Fan::eventHandler(char* query) {

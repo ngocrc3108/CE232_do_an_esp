@@ -100,5 +100,5 @@ int mqtt_publish(char* topic, char* data_string) {
 }
 
 int mqtt_subscribe(char* topic) {
-    return esp_mqtt_client_subscribe(mqtt_client, topic, 0);
+    return esp_mqtt_client_subscribe(mqtt_client, topic, 2);
 }

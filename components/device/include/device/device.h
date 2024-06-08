@@ -14,8 +14,6 @@ class Device;
 
 class Device {
 public:
-    static int device_count;
-    static Device* device_ptrs[10];
     char id[DEVICE_ID_SIZE];
     Device_state_t state;
     char type_tring[10];
@@ -28,6 +26,9 @@ public:
     void sendACK(char* query);
     void sendSyncRequest();
     int subscribe();
+    /* --------------- STATIC --------------- */
+    static int device_count;
+    static Device* device_ptrs[10];
     static void printAll();
     static void onMessage(char* topic, char* payload);
     static void onSubscribe(int subscribe_id);

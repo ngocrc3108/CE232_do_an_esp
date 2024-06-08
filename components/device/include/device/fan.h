@@ -19,6 +19,7 @@ public:
     virtual void eventHandler(char* query);
     virtual void printInfo();
     void setLevel(Fan_level_t level);
+    void operate();
 };
 
 #endif
