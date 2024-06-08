@@ -50,6 +50,7 @@ void Fan::setLevel(Fan_level_t level) {
 }
 
 void Fan::eventHandler(char* query) {
+    sendACK(query);
     char cmd[10];
     getParameter(query, "cmd=", cmd);
 
@@ -57,12 +58,10 @@ void Fan::eventHandler(char* query) {
         char state[10];
         getParameter(query, "state=", state);
         setState((Device_state_t)(state[0] - '0')); // state = '0' || '1'
-        sendACK(query);
     } else if(strcmp(cmd, "setLevel") == 0) {
         char level[10];
         getParameter(query, "level=", level);
         setLevel((Fan_level_t)(level[0] - '0')); // level = '0' | '1' | '2'
-        sendACK(query);
     } else if(strcmp(cmd, "sync") == 0) {
         char state[10];
         getParameter(query, "state=", state);

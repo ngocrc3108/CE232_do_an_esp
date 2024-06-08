@@ -65,6 +65,7 @@ void Device::sendACK(char* query) {
 }
 
 void Device::eventHandler(char* query) {
+    sendACK(query);
     char cmd[10];
     getParameter(query, "cmd=", cmd);
 
@@ -72,10 +73,6 @@ void Device::eventHandler(char* query) {
         char state[10];
         getParameter(query, "state=", state);
         setState((Device_state_t)(state[0] - '0')); // state = '0' || '1'
-    }
-    
-    if(strcmp(cmd, "setState") == 0) {
-        sendACK(query);
     }
 }
 
